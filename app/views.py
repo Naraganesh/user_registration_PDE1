@@ -84,5 +84,17 @@ def profile_display(request):
     UO=User.objects.get(username=un) 
     PO=Profile.objects.get(username=UO)
     d={'UO':UO,'PO':PO}
-    return render(request,'profile_display.html',d)  
+    return render(request,'profile_display.html',d)   
+
+
+@login_required
+def change_password(request): 
+    if request.method=='POST':
+        pw=request.POST['pw']
+        username=request.session.get('username') 
+        UO=User.objects.get(username=username)
+        UO.set_password(pw)
+        UO.save()
+        return HttpResponse('password changed successfully')
+    return render(request,'change_password.html')
 
